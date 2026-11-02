@@ -1,0 +1,149 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PixelsGhost</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,800;1,6..96,500&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a magic-shop flyer — one big card-swap moment up top, then three short acts (the effect, the convincers, getting it), set on a felt-green card table. */
+:root {
+  --felt: #0f3b33;
+  --felt-deep: #0a2a24;
+  --paper: #fbf8f1;
+  --ink: #f3efe4;
+  --muted: #a9c3bb;
+  --pip: #d3263a;
+  --gold: #e3b54a;
+  --line: rgba(243, 239, 228, .16);
+  --display: "Bodoni Moda", "Didot", "Times New Roman", serif;
+  --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--felt); color: var(--ink); font: 18px/1.6 var(--body);
+  background-image: radial-gradient(ellipse at 50% 0%, #165346 0%, var(--felt) 55%, var(--felt-deep) 100%); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 72px; display: grid; gap: 80px; }
+h1, h2 { font-family: var(--display); font-weight: 800; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(3rem, 10vw, 6.4rem); letter-spacing: -.01em; }
+h1 em { font-style: italic; font-weight: 500; color: var(--gold); }
+h2 { font-size: clamp(1.9rem, 5vw, 3rem); }
+h3 { margin: 0; font-size: 1.1rem; }
+p { margin: 0; }
+.eyebrow { font: 500 .78rem var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.lede { font-size: 1.2rem; color: var(--muted); max-width: 48ch; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; }
+@media (max-width: 780px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+.hero-copy { display: grid; gap: 20px; }
+.badge { justify-self: start; font: 500 .8rem var(--mono); border: 1px solid var(--line); border-radius: 99px; padding: 6px 12px; color: var(--muted); }
+
+.stage { position: relative; justify-self: center; width: min(300px, 78vw); aspect-ratio: 5 / 7; perspective: 1200px; }
+.card { position: absolute; inset: 0; border-radius: 16px; background: var(--paper); color: #111; box-shadow: 0 30px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.5) inset; overflow: hidden; }
+.card .idx { position: absolute; font: 700 2.1rem/1 var(--display); display: grid; justify-items: center; gap: 2px; }
+.card .idx small { font-size: 1.5rem; }
+.card .tl { top: 14px; left: 16px; } .card .br { bottom: 14px; right: 16px; transform: rotate(180deg); }
+.jack { color: var(--pip); }
+.jack .face { position: absolute; inset: 16% 18%; border: 2px solid #1f3a8a; border-radius: 4px; background:
+  linear-gradient(135deg, transparent 46%, #111 46% 54%, transparent 54%),
+  linear-gradient(180deg, #f2c94c 0 18%, #d3263a 18% 50%, #f2c94c 50% 68%, #d3263a 68%); opacity: .9; }
+.three { color: #111; }
+.three .pips { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(3, 1fr); place-items: center; padding: 22% 0; font-size: 3.4rem; line-height: 1; }
+.three { animation: reveal 6s ease-in-out infinite; }
+.jack { animation: hide 6s ease-in-out infinite; }
+@keyframes reveal { 0%, 30% { opacity: 0; filter: blur(6px); } 45%, 85% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(6px); } }
+@keyframes hide { 0%, 30% { opacity: 1; } 45%, 85% { opacity: 0; } 100% { opacity: 1; } }
+.scan { position: absolute; inset: -6% -6%; border: 2px dashed rgba(227,181,74,.55); border-radius: 22px; animation: lock 6s ease-in-out infinite; }
+@keyframes lock { 0%, 15% { opacity: 0; transform: scale(1.08); } 25%, 40% { opacity: 1; transform: scale(1); } 55%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .three, .jack, .scan { animation: none; } .jack { opacity: 0; } .scan { opacity: 0; } }
+.caption { position: absolute; left: 50%; bottom: -44px; transform: translateX(-50%); white-space: nowrap; font: 500 .78rem var(--mono); color: var(--muted); }
+
+/* acts */
+section { display: grid; gap: 28px; }
+.head { display: grid; gap: 10px; max-width: 60ch; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 28px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; gap: 8px; align-content: start; border-top: 1px solid var(--line); padding-top: 16px; }
+.steps li::before { content: counter(s); font: 800 2.6rem/1 var(--display); color: var(--gold); }
+.steps p, .feat p { color: var(--muted); font-size: 1rem; }
+
+.feats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.feat { background: var(--felt-deep); padding: 24px; display: grid; gap: 8px; align-content: start; }
+.feat .suit { font-size: 1.4rem; line-height: 1; }
+.feat:nth-child(odd) .suit { color: var(--pip); } .feat:nth-child(even) .suit { color: var(--ink); }
+
+.get { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; background: var(--paper); color: #1b2a26; border-radius: 18px; padding: 36px; }
+@media (max-width: 780px) { .get { grid-template-columns: minmax(0, 1fr); padding: 24px; } }
+.get h2 { color: #0f3b33; }
+.get p { color: #3f514b; }
+.get ol { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; color: #3f514b; }
+.get strong { color: #0f3b33; }
+.note { font: 500 .82rem var(--mono); color: #6b7d77 !important; }
+footer { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; color: var(--muted); font: 500 .82rem var(--mono); border-top: 1px solid var(--line); padding-top: 20px; }
+footer a { color: var(--muted); }
+</style>
+</head><body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-copy">
+      <span class="badge">iPhone · in beta on TestFlight</span>
+      <h1>Pixels<em>Ghost</em></h1>
+      <p class="lede">You hold up the Jack of Diamonds. On the phone, it is the Three of Clubs, following your hand, catching the light, smeared by the same motion. Nobody is looking at an app. They think they are looking at the camera.</p>
+    </div>
+    <div class="stage" aria-label="A Jack of Diamonds turning into the Three of Clubs on screen" role="img">
+      <div class="scan"></div>
+      <div class="card jack"><span class="idx tl">J<small>♦</small></span><div class="face"></div><span class="idx br">J<small>♦</small></span></div>
+      <div class="card three"><span class="idx tl">3<small>♣</small></span><div class="pips"><span>♣</span><span>♣</span><span>♣</span></div><span class="idx br">3<small>♣</small></span></div>
+      <span class="caption">held: J♦ · shown: 3♣</span>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-effect">
+    <div class="head">
+      <p class="eyebrow">The effect</p>
+      <h2 id="h-effect">An ordinary camera, an impossible card</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>The phone is just a phone</h3><p>It sits on your home screen. You swipe across and tap Camera, like anyone would. That home screen is a picture, with the real clock and battery live on top.</p></li>
+      <li><h3>The card goes up</h3><p>Hold the Jack about 25 cm above the screen. A light tap in your hand tells you it has locked on. Nobody else feels it.</p></li>
+      <li><h3>The screen lies</h3><p>The camera shows the card you chose instead. Move it, tilt it, take it away off the edge of the screen. The fake leaves with it.</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="h-convince">
+    <div class="head">
+      <p class="eyebrow">Why it fools people</p>
+      <h2 id="h-convince">Matched to the room, every two seconds</h2>
+      <p class="lede">The fake card is not pasted on. It reads the real card in your hand and copies how the camera sees it.</p>
+    </div>
+    <div class="feats">
+      <div class="feat"><span class="suit">♦</span><h3>Ink like the real print</h3><p>The Jack's two big diamonds and its solid black centre are the reference. The fake's red and black are matched to them in the room's own light.</p></div>
+      <div class="feat"><span class="suit">♣</span><h3>Grain, focus and blur</h3><p>Camera grain, out-of-focus softness that grows as the card comes closer, and motion smear at the camera's own exposure time.</p></div>
+      <div class="feat"><span class="suit">♥</span><h3>A smooth, tight track</h3><p>The card's own edges firm up every frame. Going off screen, the fake glides out along the card's path instead of vanishing.</p></div>
+      <div class="feat"><span class="suit">♠</span><h3>Secret controls</h3><p>Double-tap the flip arrows to reset. Record with sound to Photos. Choose any card as the reveal: the 3♣, or one you photograph.</p></div>
+    </div>
+  </section>
+
+  <section class="get" aria-labelledby="h-get">
+    <div class="head">
+      <p class="eyebrow" style="color:#a67c1c">Try it</p>
+      <h2 id="h-get">Join the beta</h2>
+      <p>PixelsGhost is in private testing for magicians. Testers are invited by email through Apple's TestFlight.</p>
+    </div>
+    <div style="display:grid;gap:14px">
+      <ol>
+        <li>Accept the TestFlight invite on your iPhone.</li>
+        <li>Install <strong>PixelsGhost</strong> from the TestFlight app.</li>
+        <li>Open Settings in the app (hold <strong>•••</strong>) and read <strong>Instructions</strong>.</li>
+        <li>You will need a <strong>Jack of Diamonds</strong> to hold up.</li>
+      </ol>
+      <p class="note">Works on iPhone with a front camera. Nothing you do in the app leaves your phone.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>PixelsGhost · a trick for close-up magicians</span>
+    <a href="privacy.html">Privacy policy</a>
+  </footer>
+</div>
+</body></html>
